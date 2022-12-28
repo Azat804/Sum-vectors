@@ -15,7 +15,7 @@ int main()
     int id = 0;
     int i = 0;
     int j = 0;
-    int n = 80;
+    int n = 100;
     int k;
     int* a = new int[n];
     int* b=new int[n];
@@ -38,7 +38,13 @@ int main()
     {id = omp_get_thread_num();
     k = omp_get_num_threads();
     for (int j = 0; j < n / k; j++) {
-        c[j + id * n / k] = b[j + id * n / k] + a[j + id * n / k];
+        c[j + id * (n / k)] = b[j + id * (n / k)] + a[j + id * (n / k)];
+    }
+    if (id == k-1) {
+        
+        for (int jj = 0; jj < n % k; jj++) {
+            c[jj + (id + 1) * (n / k)] = b[jj + (id + 1) * (n / k)] + a[jj + (id + 1) * (n / k)];
+        }
     }
 
     }
